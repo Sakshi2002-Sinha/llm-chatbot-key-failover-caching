@@ -241,7 +241,7 @@ normally and return a real answer.
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `LLM_API_KEYS` | — (required, ≥2) | Comma-separated key pool → `key_1`, `key_2`, … |
-| `LLM_MODEL` | `gemini/gemini-2.5-flash` | LiteLLM model name |
+| `LLM_MODEL` | `gemini/gemini-3.5-flash-lite` | LiteLLM model name |
 | `LLM_MODELS` | — | Optional per-key models, comma-separated, aligned with keys |
 | `DATABASE_URL` | `sqlite:///./data/app.db` | SQLite location |
 | `ALLOWED_ORIGINS` | `http://localhost:3000` | CORS origins, comma-separated |

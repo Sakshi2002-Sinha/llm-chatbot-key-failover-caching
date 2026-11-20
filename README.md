@@ -32,7 +32,7 @@ React (Vite, nginx :3000) ──▶ FastAPI (:8000) ──▶ KeyPool failover �
    **New → Web Service** → Docker, Root Directory `backend`.
 3. Environment variables:
    - `LLM_API_KEYS` = `key1,key2` (two real keys, e.g. two Google AI Studio Gemini keys)
-   - `LLM_MODEL` = `gemini/gemini-2.5-flash` (any LiteLLM model name works)
+   - `LLM_MODEL` = `gemini/gemini-3.5-flash-lite` (any LiteLLM model name works)
    - `ALLOWED_ORIGINS` = your Vercel URL, e.g. `https://my-chat.vercel.app`
    - `ENABLE_FAILURE_SIMULATION` = `true`
    - `DATABASE_URL` = `sqlite:////data/app.db`
