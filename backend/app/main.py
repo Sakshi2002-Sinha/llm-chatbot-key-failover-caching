@@ -86,6 +86,14 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
 
     # ------------------------------------------------------------ routes
 
+    @app.get("/", include_in_schema=False)
+    async def root():
+        return {
+            "service": "llm-chatbot-backend",
+            "endpoints": ["GET /health", "POST /chat", "GET /sessions/{session_id}/messages"],
+            "docs": "/docs",
+        }
+
     @app.get("/health", response_model=HealthResponse)
     async def health():
         db_ok = await run_in_threadpool(app.state.db.ping)

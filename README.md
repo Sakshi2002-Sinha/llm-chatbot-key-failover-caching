@@ -19,29 +19,37 @@ React (Vite, nginx :3000) ──▶ FastAPI (:8000) ──▶ KeyPool failover �
 
 | Tier | URL |
 |------|-----|
-| Frontend | `https://<your-frontend>.vercel.app` ← *fill in after deploying* |
-| Backend  | `https://<your-backend>.onrender.com` ← *fill in after deploying* |
-| Health   | `https://<your-backend>.onrender.com/health` |
+| Frontend | https://llm-chatbot-frontend-ll33.onrender.com |
+| Backend  | https://llm-chatbot-backend-zd46.onrender.com |
+| Health   | https://llm-chatbot-backend-zd46.onrender.com/health |
+| API docs | https://llm-chatbot-backend-zd46.onrender.com/docs |
 | Demo video | `<link>` |
+
+Both tiers are deployed on Render from the single [`render.yaml`](render.yaml) blueprint:
+the backend as a Docker web service, the frontend as a static site.
 
 ### How to deploy (≈10 minutes)
 
-**Backend → Render (Docker)**
 1. Push this repo to GitHub (public).
-2. Render → **New → Blueprint** → select the repo (uses [`render.yaml`](render.yaml)), *or*
-   **New → Web Service** → Docker, Root Directory `backend`.
-3. Environment variables:
+2. Render → **New → Blueprint** → select the repo. It creates both services from `render.yaml`.
+3. When prompted, set the two secret/unknown variables on the backend:
    - `LLM_API_KEYS` = `key1,key2` (two real keys, e.g. two Google AI Studio Gemini keys)
-   - `LLM_MODEL` = `gemini/gemini-3.5-flash-lite` (any LiteLLM model name works)
-   - `ALLOWED_ORIGINS` = your Vercel URL, e.g. `https://my-chat.vercel.app`
-   - `ENABLE_FAILURE_SIMULATION` = `true`
-   - `DATABASE_URL` = `sqlite:////data/app.db`
-4. Deploy and open `/health` → `{"status":"ok","keys_configured":2,"cache_enabled":true}`.
+   - `ALLOWED_ORIGINS` = the frontend URL Render assigns (plus `http://localhost:3000` if you like)
+4. Everything else comes from the blueprint: `LLM_MODEL=gemini/gemini-3.5-flash-lite` (any
+   LiteLLM model name works), `ENABLE_FAILURE_SIMULATION=true`,
+   `DATABASE_URL=sqlite:////data/app.db`, and the frontend's `VITE_API_BASE_URL`.
+5. Open `/health` → `{"status":"ok","keys_configured":2,"cache_enabled":true}`.
 
-**Frontend → Vercel**
-1. Vercel → **Add New Project** → import the repo, **Root Directory = `frontend`** (Vite preset).
-2. Environment variable `VITE_API_BASE_URL` = your Render URL (no trailing slash).
-3. Deploy. If you change the Vercel URL later, update `ALLOWED_ORIGINS` on Render.
+> **Free-tier notes.** Render's free web services have no persistent disk, so on the live demo
+> SQLite history lives as long as the running instance and is reset when the service redeploys
+> or spins down after ~15 minutes idle.
+> Locally, `make up` mounts the named volume at `/data`, so history fully survives container
+> restarts. On a paid plan, uncomment the `disk:` block in `render.yaml` to get the same in
+> production. The model is `gemini-3.5-flash-lite` because `gemini-2.0-flash` and
+> `gemini-2.5-flash` are retired or deprecated and return 404.
+
+The frontend also deploys to Vercel or Netlify unchanged: root directory `frontend`, Vite preset,
+`VITE_API_BASE_URL` = backend URL ([`frontend/vercel.json`](frontend/vercel.json) is included).
 
 > Render's free tier sleeps after inactivity, so the first request after a pause can take
 > ~30–60 s. Open `/health` once before a demo.

@@ -13,8 +13,8 @@ services:
         sync: false
       - key: LLM_MODEL
         value: gemini/gemini-3.5-flash-lite
-      - key: ALLOWED_ORIGINS
-        sync: false            # e.g. https://your-app.vercel.app
+      - key: ALLOWED_ORIGINS   # the frontend static site below (+ local dev)
+        value: https://llm-chatbot-frontend-ll33.onrender.com,http://localhost:3000
       - key: ENABLE_FAILURE_SIMULATION
         value: "true"
       - key: DATABASE_URL
