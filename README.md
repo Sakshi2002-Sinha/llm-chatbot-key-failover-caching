@@ -23,7 +23,7 @@ React (Vite, nginx :3000) ──▶ FastAPI (:8000) ──▶ KeyPool failover �
 | Backend  | https://llm-chatbot-backend-zd46.onrender.com |
 | Health   | https://llm-chatbot-backend-zd46.onrender.com/health |
 | API docs | https://llm-chatbot-backend-zd46.onrender.com/docs |
-| Demo video |https://www.youtube.com/watch?v=GkqqE_hOUvA |
+| Demo video |<live URL> |
 
 Both tiers are deployed on Render from the single [`render.yaml`](render.yaml) blueprint:
 the backend as a Docker web service, the frontend as a static site.
